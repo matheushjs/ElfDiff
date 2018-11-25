@@ -12,6 +12,18 @@ However, if you really really like the command line, you can use **ElfDiff** :).
 
 # Usage
 
+**TL;DR** Use it this way:
+
+```
+git diff --word-diff=plain > output.txt
+elfdiff output.txt > output.html
+firefox output.html
+# OR
+git diff --word-diff=plain | elfdiff > output.html
+firefox output.html
+```
+
+
 1) Create the diff file using the following command
 
 ```
