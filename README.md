@@ -41,3 +41,5 @@ elfdiff output.txt > output.html
 ```
 firefox output.html
 ```
+
+**NOTE:** The git diff command can also be used by passing specific branches as argument. <br> Example: `git diff --word-diff=plain master^`
