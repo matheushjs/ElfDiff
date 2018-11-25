@@ -62,13 +62,13 @@ for line in text.split("\n"):
 
     # Add line or lines to the html object
     if hasRemove and hasAdd:
-        html += "<p>" + """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</p>"
+        html += "<p>" + """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</p>\n"
     elif hasRemove:
-        html += "<p>" + """<span class="rem">""" + remLine + "</span></p>"
+        html += "<p>" + """<span class="rem">""" + remLine + "</span></p>\n"
     elif hasAdd:
-        html += "<p>" + """<span class="add">""" + addLine + "</span></p>"
+        html += "<p>" + """<span class="add">""" + addLine + "</span></p>\n"
     else:
-        html += "<p>" + line + "</p>"
+        html += "<p>" + line + "</p>\n"
 
 html += """
         </div>
