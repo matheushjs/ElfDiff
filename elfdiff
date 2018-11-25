@@ -12,7 +12,7 @@ else:
 if hasPipe:
     text = sys.stdin.read()
 else: # Has arguments instead
-    text = open(sys.argv[1])
+    text = open(sys.argv[1]).read()
 
 html = """
 <html>
@@ -22,6 +22,14 @@ html = """
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+        <style>
+            .rem {
+                background-color: #F003;
+            }
+            .add {
+                background-color: #0F03;
+            }
+        </style>
     </head>
     <body>
         <div class="container text-justify">"""
@@ -48,17 +56,17 @@ for line in text.split("\n"):
             beg = addLine.find("[-")
             end = addLine.find("-]")
             addLine = addLine[:beg] + addLine[end+2:]
-        addLine = addLine.replace("{+", """<span style="background-color: chartreuse;">""")
+        addLine = addLine.replace("{+", """<span style="background-color: #5fdd00;">""")
         addLine = addLine.replace("+}", """</span>""")
 
 
     # Add line or lines to the html object
     if hasRemove and hasAdd:
-        html += "<p>" + remLine + "<br>" + addLine + "</p>"
+        html += "<p>" + """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</p>"
     elif hasRemove:
-        html += "<p>" + remLine + "</p>"
+        html += "<p>" + """<span class="rem">""" + remLine + "</span></p>"
     elif hasAdd:
-        html += "<p>" + addLine + "</p>"
+        html += "<p>" + """<span class="add">""" + addLine + "</span></p>"
     else:
         html += "<p>" + line + "</p>"
 
