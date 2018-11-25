@@ -3,11 +3,18 @@
 import sys
 import re
 
+# Check if there is pipe input
+if not sys.stdin.isatty():
+    hasPipe = True
+else:
+    hasPipe = False
 
-with open(sys.argv[1]) as fp:
-    text = fp.read()
+if hasPipe:
+    text = sys.stdin.read()
+else: # Has arguments instead
+    text = open(sys.argv[1])
 
-    html = """
+html = """
 <html>
     <head>
         <meta charset="UTF-8">
@@ -19,45 +26,45 @@ with open(sys.argv[1]) as fp:
     <body>
         <div class="container text-justify">"""
 
-    # Make each line a <p>
-    for line in text.split("\n"):
-        hasRemove = line.find("[-") >= 0
-        hasAdd    = line.find("{+") >= 0
+# Make each line a <p>
+for line in text.split("\n"):
+    hasRemove = line.find("[-") >= 0
+    hasAdd    = line.find("{+") >= 0
 
-        # Line that has only the removed portion
-        if hasRemove:
-            remLine = line
-            while remLine.find("{+") >= 0:
-                beg = remLine.find("{+")
-                end = remLine.find("+}")
-                remLine = remLine[:beg] + remLine[end+2:]
-            remLine = remLine.replace("[-", """<span style="background-color: tomato; text-decoration: line-through;">""")
-            remLine = remLine.replace("-]", """</span>""")
+    # Line that has only the removed portion
+    if hasRemove:
+        remLine = line
+        while remLine.find("{+") >= 0:
+            beg = remLine.find("{+")
+            end = remLine.find("+}")
+            remLine = remLine[:beg] + remLine[end+2:]
+        remLine = remLine.replace("[-", """<span style="background-color: tomato; text-decoration: line-through;">""")
+        remLine = remLine.replace("-]", """</span>""")
 
-        # Line that has only the added portion
-        if hasAdd:
-            addLine = line
-            while addLine.find("[-") >= 0:
-                beg = addLine.find("[-")
-                end = addLine.find("-]")
-                addLine = addLine[:beg] + addLine[end+2:]
-            addLine = addLine.replace("{+", """<span style="background-color: chartreuse;">""")
-            addLine = addLine.replace("+}", """</span>""")
+    # Line that has only the added portion
+    if hasAdd:
+        addLine = line
+        while addLine.find("[-") >= 0:
+            beg = addLine.find("[-")
+            end = addLine.find("-]")
+            addLine = addLine[:beg] + addLine[end+2:]
+        addLine = addLine.replace("{+", """<span style="background-color: chartreuse;">""")
+        addLine = addLine.replace("+}", """</span>""")
 
 
-        # Add line or lines to the html object
-        if hasRemove and hasAdd:
-            html += "<p>" + remLine + "<br>" + addLine + "</p>"
-        elif hasRemove:
-            html += "<p>" + remLine + "</p>"
-        elif hasAdd:
-            html += "<p>" + addLine + "</p>"
-        else:
-            html += "<p>" + line + "</p>"
+    # Add line or lines to the html object
+    if hasRemove and hasAdd:
+        html += "<p>" + remLine + "<br>" + addLine + "</p>"
+    elif hasRemove:
+        html += "<p>" + remLine + "</p>"
+    elif hasAdd:
+        html += "<p>" + addLine + "</p>"
+    else:
+        html += "<p>" + line + "</p>"
 
-    html += """
+html += """
         </div>
     </body>
 </html>"""
 
-    print(html)
+print(html)
