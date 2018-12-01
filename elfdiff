@@ -9,10 +9,26 @@ if not sys.stdin.isatty():
 else:
     hasPipe = False
 
+helpmsg = """\
+Usage with arguments:
+    git diff --word-diff=plain > diff.txt
+    elfdiff diff.txt > diff.html
+
+Usage with pipes:
+    git diff --word-diff=plain | elfdiff > diff.html"""
+
+if sys.argv.count("-h") > 0:
+    print(helpmsg)
+    sys.exit(0)
+
 if hasPipe:
     text = sys.stdin.read()
 else: # Has arguments instead
-    text = open(sys.argv[1]).read()
+    try:
+        text = open(sys.argv[1]).read()
+    except IndexError:
+        print(helpmsg)
+        sys.exit(1)
 
 html = """
 <html>
