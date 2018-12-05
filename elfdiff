@@ -56,8 +56,9 @@ htmlText += "<p>"
 # Make each line a <p>
 for line in text.split("\n"):
     line = html.escape(line)
-    line = line.replace(" ", "&nbsp")
-    line = line.replace("\t", "&nbsp&nbsp&nbsp&nbsp")
+    line = line.replace("  ", " &nbsp")
+    line = line.replace("&nbsp ", "&nbsp&nbsp")
+    line = line.replace("\t", " &nbsp&nbsp&nbsp")
 
     hasRemove = line.find("[-") >= 0
     hasAdd    = line.find("{+") >= 0
@@ -87,11 +88,11 @@ for line in text.split("\n"):
         # Open new paragraph
         htmlText += "</p><p>"
     elif hasRemove and hasAdd:
-        htmlText += """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</span><br>\n"
+        htmlText += """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</span><br><br>\n"
     elif hasRemove:
-        htmlText += """<span class="rem">""" + remLine + "</span><br>\n"
+        htmlText += """<span class="rem">""" + remLine + "</span><br><br>\n"
     elif hasAdd:
-        htmlText += """<span class="add">""" + addLine + "</span><br>\n"
+        htmlText += """<span class="add">""" + addLine + "</span><br><br>\n"
     else:
         htmlText += line + "<br>\n"
 
