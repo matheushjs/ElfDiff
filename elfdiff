@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import sys
-import re
+import html
 
 # Check if there is pipe input
 if not sys.stdin.isatty():
@@ -30,7 +30,7 @@ else: # Has arguments instead
         print(helpmsg)
         sys.exit(1)
 
-html = """
+htmlText = """
 <html>
     <head>
         <meta charset="UTF-8">
@@ -51,10 +51,14 @@ html = """
         <div class="container text-justify">"""
 
 # Add first paragraph
-html += "<p>"
+htmlText += "<p>"
 
 # Make each line a <p>
 for line in text.split("\n"):
+    line = html.escape(line)
+    line = line.replace(" ", "&nbsp")
+    line = line.replace("\t", "&nbsp&nbsp&nbsp&nbsp")
+
     hasRemove = line.find("[-") >= 0
     hasAdd    = line.find("{+") >= 0
 
@@ -78,23 +82,22 @@ for line in text.split("\n"):
         addLine = addLine.replace("{+", """<span style="background-color: #5fdd00;">""")
         addLine = addLine.replace("+}", """</span>""")
 
-
     # Add line or lines to the html object
     if len(line) == 0:
         # Open new paragraph
-        html += "</p><p>"
+        htmlText += "</p><p>"
     elif hasRemove and hasAdd:
-        html += """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "<br>\n"
+        htmlText += """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</span><br>\n"
     elif hasRemove:
-        html += """<span class="rem">""" + remLine + "</span><br>\n"
+        htmlText += """<span class="rem">""" + remLine + "</span><br>\n"
     elif hasAdd:
-        html += """<span class="add">""" + addLine + "</span><br>\n"
+        htmlText += """<span class="add">""" + addLine + "</span><br>\n"
     else:
-        html += line + "<br>\n"
+        htmlText += line + "<br>\n"
 
-html += """</p>
+htmlText += """</p>
         </div>
     </body>
 </html>"""
 
-print(html)
+print(htmlText)
