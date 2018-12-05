@@ -50,6 +50,9 @@ html = """
     <body>
         <div class="container text-justify">"""
 
+# Add first paragraph
+html += "<p>"
+
 # Make each line a <p>
 for line in text.split("\n"):
     hasRemove = line.find("[-") >= 0
@@ -77,16 +80,19 @@ for line in text.split("\n"):
 
 
     # Add line or lines to the html object
-    if hasRemove and hasAdd:
-        html += "<p>" + """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "</p>\n"
+    if len(line) == 0:
+        # Open new paragraph
+        html += "</p><p>"
+    elif hasRemove and hasAdd:
+        html += """<span class="rem">""" + remLine + """</span><br><span class="add">""" + addLine + "<br>\n"
     elif hasRemove:
-        html += "<p>" + """<span class="rem">""" + remLine + "</span></p>\n"
+        html += """<span class="rem">""" + remLine + "</span><br>\n"
     elif hasAdd:
-        html += "<p>" + """<span class="add">""" + addLine + "</span></p>\n"
+        html += """<span class="add">""" + addLine + "</span><br>\n"
     else:
-        html += "<p>" + line + "</p>\n"
+        html += line + "<br>\n"
 
-html += """
+html += """</p>
         </div>
     </body>
 </html>"""
