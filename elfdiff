@@ -71,33 +71,43 @@ htmlText = """
 # Add first paragraph
 htmlText += "<p>"
 
-# Make each line a <p>
+# Parse each line separately
 for line in text.split("\n"):
+    # Excape whole line, and change spaces to nbsp
     line = html.escape(line)
     line = line.replace("  ", " &nbsp")
     line = line.replace("&nbsp ", "&nbsp&nbsp")
     line = line.replace("\t", " &nbsp&nbsp&nbsp")
 
+    # Check if there was a removal or an addition for that line (from git diff)
     hasRemove = line.find("[-") >= 0
     hasAdd    = line.find("{+") >= 0
 
-    # Line that has only the removed portion
+    # Create a line with only the removals
     if hasRemove:
         remLine = line
+
+        # Remove text within {+ +}
         while remLine.find("{+") >= 0:
             beg = remLine.find("{+")
             end = remLine.find("+}")
             remLine = remLine[:beg] + remLine[end+2:]
+
+        # Add red colors for the text within [- -]
         remLine = remLine.replace("[-", """<span style="background-color: tomato; text-decoration: line-through;">""")
         remLine = remLine.replace("-]", """</span>""")
 
-    # Line that has only the added portion
+    # Create a line with only the additions
     if hasAdd:
         addLine = line
+
+        # Remove text within [- -]
         while addLine.find("[-") >= 0:
             beg = addLine.find("[-")
             end = addLine.find("-]")
             addLine = addLine[:beg] + addLine[end+2:]
+
+        # Add green colors for text within {+ +}
         addLine = addLine.replace("{+", """<span style="background-color: #5fdd00;">""")
         addLine = addLine.replace("+}", """</span>""")
 
