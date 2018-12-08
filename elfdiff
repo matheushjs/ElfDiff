@@ -10,12 +10,30 @@ else:
     hasPipe = False
 
 helpmsg = """\
-Usage with arguments:
-    git diff --word-diff=plain > diff.txt
-    elfdiff diff.txt > diff.html
+USAGE
+    elfdiff [input_file] [-o output_file]
 
-Usage with pipes:
-    git diff --word-diff=plain | elfdiff > diff.html"""
+OPTIONS
+    -o [output_file]
+        Saves produced diff HTML file to the specified file.
+        If not given, stdout is used.
+
+EXAMPLES
+    Using arguments:
+        git diff --word-diff=plain > diff.txt
+        elfdiff diff.txt -o diff.html
+
+    Using pipe:
+        git diff --word-diff=plain | elfdiff > diff.html"""
+
+# Parse options
+if sys.argv.count("-o") > 0:
+    idx = sys.argv.index("-o")
+    outputFile = open(sys.argv[idx+1], "w+")
+    sys.argv.pop(idx)
+    sys.argv.pop(idx)
+else:
+    outputFile = sys.stdout
 
 if sys.argv.count("-h") > 0:
     print(helpmsg)
@@ -101,4 +119,4 @@ htmlText += """</p>
     </body>
 </html>"""
 
-print(htmlText)
+outputFile.write(htmlText)
