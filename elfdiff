@@ -91,6 +91,9 @@ for line in text.split("\n"):
         while remLine.find("{+") >= 0:
             beg = remLine.find("{+")
             end = remLine.find("+}")
+            if beg < 0 or end < 0:
+                sys.stderr.write("Found unmatching {+ +}. Output HTML might be weird.\n")
+                break
             remLine = remLine[:beg] + remLine[end+2:]
 
         # Add red colors for the text within [- -]
@@ -105,6 +108,9 @@ for line in text.split("\n"):
         while addLine.find("[-") >= 0:
             beg = addLine.find("[-")
             end = addLine.find("-]")
+            if beg < 0 or end < 0:
+                sys.stderr.write("Found unmatching [- -]. Output HTML might be weird.\n")
+                break
             addLine = addLine[:beg] + addLine[end+2:]
 
         # Add green colors for text within {+ +}
