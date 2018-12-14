@@ -1,6 +1,6 @@
 # ElfDiff
 
-<img src="https://mjsaldanha.com/images/elf_icon.png" width="128" height="128">
+<a href="https://mjsaldanha.com"><img src="https://mjsaldanha.com/images/elf_icon.png" width="128" height="128"></a>
 
 So you are writing a scientific article, and your advisor often reviews it and gives you feedback about what should be changed.
 
